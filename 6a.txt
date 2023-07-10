@@ -1,0 +1,41 @@
+%{
+	#include<stdio.h>
+	int i=0;
+%}
+id  [a-zA-Z0-9 \n\t]*
+%%
+"/*"{id}"*/"       {i++;}
+%%
+main()
+{
+	system("clear");
+	FILE *fp;
+	fp=fopen("abc.c","r");
+	yyin=fp;
+	yylex();
+	printf("Number of Comment Lines= %d\n",i);
+}
+yywrap()
+{}
+
+Supporting abc.c file:
+
+/*This is a C Program*/
+main()
+{
+	int x=4; /*Declaration of x*/
+	int y=7,z; /*Declaration of y and z*/
+	z=x+y;
+	printf("ans= %d",z);
+}
+
+Execution:
+
+[root@cse1bldea ssw]# lex 1b.lex
+[root@cse1bldea ssw]# cc lex.yy.c
+[root@cse1bldea ssw]# ./a.out
+
+
+
+
+

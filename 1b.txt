@@ -1,0 +1,48 @@
+%{
+	#include<stdio.h>
+	#include<stdlib.h>
+%}
+%token num
+%%
+START: expr '\n' {printf("\nValue= %d\n",$$); exit(0);}
+           | error {printf("\nInvalid Expression.\n"); exit(0);}
+           ;
+   expr: expr '+' term {$$=$1+$3;}
+           | expr '-' term {$$=$1-$3;}
+           |term
+           ;
+  term: term '*' factor {$$=$1*$3;}
+           | term '/' factor {$$=$1/$3;}
+           | factor
+           ;
+factor: '(' expr ')' {$$=$2;}
+           | num
+           ;
+%%
+main()
+{
+	system("clear");
+	printf("Enter an Arithmetic Expression to Evaluate:\n");
+	yyparse();
+}
+yyerror()
+{}
+yylex()
+{
+	 int c;
+ 	c=getchar();
+ 	if(isdigit(c))
+ 	{
+  		yylval=c-'0';
+  		return num;
+ 	}
+ 	return c;
+}
+
+Execution:
+
+[root@cse1bldea ssw]# yacc -d 5a.yacc
+[root@cse1bldea ssw]# cc y.tab.c
+[root@cse1bldea ssw]# ./a.out
+
+

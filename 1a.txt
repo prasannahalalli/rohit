@@ -1,0 +1,53 @@
+%{
+	#include<stdio.h>
+	int oprc=0,idc=0,digc=0,top=-1;
+	char s[20];
+%}
+iden  [a-zA-Z]+[a-zA-Z0-9]*
+opr   [+-/*]
+digit  [0-9]+
+%%
+[ \n\t]+ 	{;}
+['(']   	{ s[++top]='('; }
+[')']   	{
+          	  if(s[top]=='(' && top!=-1)
+           		top--;
+          	  else
+          	  {
+           		printf("\nInvalid Expression.\n");
+           		exit(0);
+          	  }
+        	}
+{iden}   	{idc++;}
+{digit}            {digc++;}
+{opr}		{oprc++;}
+.                     		{
+                        		  printf("\nInvalid Expression.\n");
+                        		  exit(0);
+                      		}
+%%
+main()
+{
+	system("clear");
+	printf("Enter an Arithmetic Expression:\n");
+	yylex();
+	if(((idc+digc)==oprc+1)&&top==-1)
+	{
+  		printf("\nValid Expression.\n");
+  		printf("\nNumber of Operators= %d\nNumber of Identifiers= %d\nNumber of 
+		           Digits= %d\n",oprc,idc,digc);
+	}
+
+	else
+		printf("\nInvalid Expression.\n");
+}
+yywrap()
+{}
+
+Execution:
+
+[root@cse1bldea ssw]# lex 2a.lex
+[root@cse1bldea ssw]# cc lex.yy.c
+[root@cse1bldea ssw]# ./a.out
+
+
